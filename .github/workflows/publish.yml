@@ -277,5 +277,3 @@ jobs:
           ---
           
           **🎮 지금 바로 시작**: `pip install emolog && emo`
-        draft: false
-        prerelease: false

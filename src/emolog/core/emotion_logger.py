@@ -4,13 +4,13 @@ Interactive emotion logging system
 
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 
 from rich.console import Console
-from rich.prompt import Prompt, IntPrompt
 from rich.panel import Panel
-from rich.text import Text
+from rich.prompt import IntPrompt, Prompt
 from rich.table import Table
+from rich.text import Text
 
 from .data_manager import DataManager
 

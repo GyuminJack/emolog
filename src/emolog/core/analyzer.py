@@ -2,15 +2,15 @@
 Emotion data analysis and insights
 """
 
-from collections import Counter, defaultdict
-from datetime import datetime, timezone, timedelta
-from typing import Dict, List, Any, Tuple
 import zoneinfo
+from collections import Counter, defaultdict
+from datetime import datetime, timedelta, timezone
+from typing import Any, Dict, List, Tuple
 
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
 from rich.progress import track
+from rich.table import Table
 from rich.text import Text
 
 from .data_manager import DataManager

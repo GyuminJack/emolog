@@ -163,27 +163,56 @@ git clone https://github.com/gmlee/emolog.git
 cd emolog
 
 # 개발 의존성 설치
-uv pip install -e ".[dev]"
-
-# pre-commit 훅 설정 (자동으로 설정됨)
-# 코드 포맷팅
-black src/
-isort src/
+make install
+# 또는 직접: uv pip install -e ".[dev]"
 ```
+
+### 🛡️ 엄격한 코드 품질 관리
+이 프로젝트는 **ZERO TOLERANCE** 코드 품질 정책을 사용합니다:
+
+```bash
+# 코드 자동 포맷팅
+make format
+
+# 품질 검사 (커밋/푸시 전 필수)
+make check
+
+# 푸시 준비 완료 (포맷팅 + 검사)
+make push-ready
+```
+
+#### 🚫 Git 훅 강제 실행
+- **pre-commit**: 커밋 시 staged 파일 품질 검사
+- **pre-push**: 푸시 시 전체 코드베이스 품질 검사
+- **자동 차단**: black/isort 미적용 시 커밋/푸시 완전 차단
+- **자동 설치**: 도구가 없으면 자동으로 설치
 
 ### 기여 프로세스
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests and linting (`black src/ && isort src/`)
+4. **Run quality tools** (`make push-ready`)
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
+   - 🛡️ pre-commit 훅이 자동으로 품질 검사
 6. Push to the branch (`git push origin feature/amazing-feature`)
+   - 🛡️ pre-push 훅이 전체 코드베이스 검사
 7. Open a Pull Request
 
-### 코드 품질
-- **Black**: 코드 포맷팅
-- **isort**: Import 정렬
-- **Pre-push hooks**: 자동 품질 검사
+### 🔧 개발 도구 한눈에 보기
+| 명령어 | 설명 | 언제 사용? |
+|--------|------|-----------|
+| `make install` | 개발 환경 설정 | 프로젝트 시작 시 |
+| `make format` | 코드 자동 포맷팅 | 개발 중 수시로 |
+| `make lint` | 품질 검사만 | CI에서 또는 확인용 |
+| `make check` | 품질+기능 검사 | 커밋 전 |
+| `make push-ready` | 완전한 준비 | 푸시 전 필수 |
+| `make clean` | 빌드 파일 정리 | 필요시 |
+
+### 🛡️ 품질 보장
+- **자동 포맷팅**: Black (88자 라인 길이)
+- **Import 정렬**: isort (Black 프로필)
+- **Git 훅**: 커밋/푸시 시 자동 품질 검사
+- **CI/CD**: GitHub Actions에서 다중 Python 버전 테스트
 
 ## 📝 라이선스
 

@@ -5,13 +5,13 @@ Emolog - A terminal-based emotion logging tool for developers
 
 import click
 from rich.console import Console
-from rich.prompt import Prompt, Confirm
 from rich.panel import Panel
+from rich.prompt import Confirm, Prompt
 from rich.text import Text
 
-from .core.emotion_logger import EmotionLogger
-from .core.data_manager import DataManager
 from .core.analyzer import EmotionAnalyzer
+from .core.data_manager import DataManager
+from .core.emotion_logger import EmotionLogger
 
 console = Console()
 

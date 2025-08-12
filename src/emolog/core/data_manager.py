@@ -2,16 +2,16 @@
 Data management for emotion logs
 """
 
+import csv
 import json
 import os
-import uuid
-from datetime import datetime, timezone, timedelta
-from pathlib import Path
-from typing import Dict, List, Optional, Any
-from collections import defaultdict
-import csv
 import tarfile
+import uuid
 import zoneinfo
+from collections import defaultdict
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from rich.console import Console
 from rich.panel import Panel
@@ -358,8 +358,8 @@ class DataManager:
 
     def _delete_period_data(self, entries_to_delete: List[Dict[str, Any]]):
         """Delete specific entries by recreating files without them"""
-        import tempfile
         import shutil
+        import tempfile
 
         # Group entries by file
         entries_by_file = defaultdict(list)

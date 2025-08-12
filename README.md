@@ -116,15 +116,66 @@ emo backup
 - 외부 서버로 데이터가 전송되지 않습니다
 - 사용자가 직접 백업과 데이터 관리를 제어할 수 있습니다
 
+## 🚀 배포 (개발자용)
+
+### PyPI 배포 자동화
+이 프로젝트는 GitHub Actions를 통한 자동 배포를 지원합니다.
+
+1. **태그 생성으로 배포**:
+   ```bash
+   # 버전 업데이트
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+2. **GitHub Secrets 설정** (저장소 관리자):
+   - `PYPI_API_TOKEN`: PyPI API 토큰
+   - `TEST_PYPI_API_TOKEN`: Test PyPI API 토큰
+
+3. **수동 배포**:
+   ```bash
+   # 빌드
+   python -m build
+   
+   # Test PyPI 업로드
+   twine upload --repository testpypi dist/*
+   
+   # PyPI 업로드
+   twine upload dist/*
+   ```
+
 ## 🤝 기여
 
 이 프로젝트는 개인 프로젝트로 시작되었지만, 기여를 환영합니다!
 
+### 개발 환경 설정
+```bash
+# 저장소 클론
+git clone https://github.com/gmlee/emolog.git
+cd emolog
+
+# 개발 의존성 설치
+uv pip install -e ".[dev]"
+
+# pre-commit 훅 설정 (자동으로 설정됨)
+# 코드 포맷팅
+black src/
+isort src/
+```
+
+### 기여 프로세스
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+3. Make your changes
+4. Run tests and linting (`black src/ && isort src/`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+### 코드 품질
+- **Black**: 코드 포맷팅
+- **isort**: Import 정렬
+- **Pre-push hooks**: 자동 품질 검사
 
 ## 📝 라이선스
 

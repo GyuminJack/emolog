@@ -1,0 +1,146 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'  # v1.0.0, v1.2.3 등의 태그가 푸시될 때 실행
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+      with:
+        enable-cache: true
+
+    - name: Install dependencies
+      run: |
+        uv pip install --system -e ".[dev]"
+
+    - name: Run tests
+      run: |
+        black --check src/
+        isort --check-only src/
+        python -c "from src.emolog.cli import main; print('✅ All imports work')"
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+      with:
+        enable-cache: true
+
+    - name: Install build dependencies
+      run: |
+        uv pip install --system build twine
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Check package
+      run: |
+        twine check dist/*
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+  publish-test:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: test-pypi
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+    - name: Publish to Test PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        repository-url: https://test.pypi.org/legacy/
+        skip-existing: true
+
+  publish-pypi:
+    needs: [build, publish-test]
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+
+  create-release:
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Extract version from tag
+      id: version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Emolog v${{ steps.version.outputs.VERSION }}
+        body: |
+          ## 🎉 Emolog v${{ steps.version.outputs.VERSION }}
+          
+          ### 📦 설치
+          ```bash
+          pip install emolog==${{ steps.version.outputs.VERSION }}
+          ```
+          
+          ### 🚀 사용법
+          ```bash
+          emo  # 감정 기록하기
+          emo stats  # 통계 보기
+          emo --help  # 도움말
+          ```
+          
+          ### 📝 변경사항
+          이 릴리스의 변경사항은 커밋 로그를 확인해주세요.
+          
+          ### 🐛 버그 리포트
+          문제가 있다면 [Issues](https://github.com/${{ github.repository }}/issues)에 리포트해주세요.
+        draft: false
+        prerelease: false

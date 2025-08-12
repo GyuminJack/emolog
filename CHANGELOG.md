@@ -40,7 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🛡️ Code quality
   - Pre-push Git hooks with Black formatter
   - GitHub Actions CI/CD pipeline
-  - Automated PyPI publishing
+  - OIDC-based PyPI publishing (no token management needed)
+  - Automated PyPI publishing with Trusted Publisher
 
 ### Technical Details
 - **Python 3.9+** compatibility

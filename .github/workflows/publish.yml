@@ -69,6 +69,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: test-pypi
+    permissions:
+      id-token: write
+      contents: read
     steps:
     - uses: actions/checkout@v4
 
@@ -81,8 +84,6 @@ jobs:
     - name: Publish to Test PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        user: __token__
-        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository-url: https://test.pypi.org/legacy/
         skip-existing: true
 
@@ -90,6 +91,9 @@ jobs:
     needs: [build, publish-test]
     runs-on: ubuntu-latest
     environment: pypi
+    permissions:
+      id-token: write
+      contents: read
     steps:
     - uses: actions/checkout@v4
 
@@ -101,9 +105,6 @@ jobs:
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
 
   create-release:
     needs: publish-pypi
@@ -121,26 +122,141 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Emolog v${{ steps.version.outputs.VERSION }}
+        release_name: 🌟 Emolog v${{ steps.version.outputs.VERSION }} - 터미널 감정 로깅 도구
         body: |
-          ## 🎉 Emolog v${{ steps.version.outputs.VERSION }}
+          ## 🎉 Emolog v${{ steps.version.outputs.VERSION }} - 터미널에서 감정을 기록하고 분석하세요!
           
-          ### 📦 설치
+          > 개발자를 위한 터미널 기반 감정 추적 도구  
+          > 코딩하면서 느끼는 모든 감정을 체계적으로 관리해보세요 ✨
+          
+          ### 🌟 왜 Emolog인가요?
+          - **즉시 접근**: 이미 열려있는 터미널에서 `emo` 한 번이면 끝!
+          - **개발자 친화적**: CLI 환경에 익숙한 개발자들을 위한 직관적 인터페이스
+          - **과학적 접근**: 감정을 구조화해서 기록하고 패턴을 찾아내는 체계적 방법
+          - **완전한 프라이버시**: 모든 데이터는 당신의 컴퓨터에만 저장됩니다
+          
+          ### ✨ 핵심 기능들
+          
+          #### 📝 스마트한 감정 로깅
+          - **7단계 구조화 입력**: 상황 → 감정 → 강도(1-10) → 몸반응 → 생각 → 컨텍스트 → 태그
+          - **자동완성 지원**: 30+ 감정 카테고리, 15+ 몸반응, 7가지 컨텍스트 미리 준비
+          - **빠른 입력**: Enter로 건너뛰기, 이전 값 재사용 가능
+          
+          #### 📊 인사이트 가득한 분석
+          - **`emo stats`**: 감정 분포, 평균 강도, 컨텍스트별 통계를 한눈에
+          - **`emo patterns`**: 요일별, 시간대별 감정 패턴 자동 발견
+          - **`emo triggers`**: 스트레스 유발 상황과 키워드 TOP 5 분석
+          - **`emo timeline`**: 하루/주간 감정 변화를 시각적 타임라인으로
+          
+          #### 🛠️ 완벽한 데이터 관리
+          - **`emo edit`**: 실수로 잘못 입력했다면? 필드별 개별 수정 가능
+          - **`emo delete`**: 선택적 삭제로 원하는 기록만 깔끔하게 정리
+          - **`emo reset`**: 테스트 데이터나 특정 기간 데이터 일괄 초기화
+          - **`emo backup`**: 소중한 감정 기록을 안전하게 백업
+          - **`emo export`**: CSV/JSON으로 내보내서 다른 도구와 연동
+          
+          ### 📦 설치하기
           ```bash
+          # PyPI에서 설치
           pip install emolog==${{ steps.version.outputs.VERSION }}
+          
+          # 또는 uv 사용 (권장)
+          uv pip install emolog==${{ steps.version.outputs.VERSION }}
           ```
           
-          ### 🚀 사용법
+          ### 🚀 5분만에 시작하기
+          
+          #### 1️⃣ 첫 감정 기록
           ```bash
-          emo  # 감정 기록하기
-          emo stats  # 통계 보기
-          emo --help  # 도움말
+          emo
+          # → 대화형으로 현재 감정 기록
           ```
           
-          ### 📝 변경사항
-          이 릴리스의 변경사항은 커밋 로그를 확인해주세요.
+          #### 2️⃣ 내 감정 패턴 확인
+          ```bash
+          emo stats      # 이번 주 감정 분포 보기
+          emo patterns   # 언제 스트레스받는지 패턴 찾기
+          emo triggers   # 무엇이 나를 힘들게 하는지 분석
+          ```
           
-          ### 🐛 버그 리포트
-          문제가 있다면 [Issues](https://github.com/${{ github.repository }}/issues)에 리포트해주세요.
+          #### 3️⃣ 데이터 관리
+          ```bash
+          emo edit       # 기록 수정하기
+          emo delete     # 선택적 삭제
+          emo backup     # 백업 생성
+          emo export --format csv --period week  # 주간 데이터 CSV 내보내기
+          ```
+          
+          ### 💡 실제 사용 시나리오
+          
+          **🔥 코드리뷰 받은 후**
+          ```
+          $ emo
+          상황: 코드리뷰에서 많은 수정 요청 받음
+          감정: 좌절 (강도: 7)
+          몸반응: 어깨 긴장
+          생각: 내가 놓친 부분이 너무 많다
+          컨텍스트: work
+          태그: 코드리뷰, 학습
+          ```
+          
+          **📊 한 달 후 분석**
+          ```bash
+          $ emo patterns
+          • 월요일 오전에 불안감이 높아지는 경향 (80%)
+          • "코드리뷰" 태그가 있을 때 긴장도 +2.3 증가
+          • 14시-16시 사이 스트레스 집중 (67% 발생)
+          ```
+          
+          ### 🎯 이런 분들께 추천해요
+          - **스트레스 관리가 필요한 개발자**: 무엇이 나를 힘들게 하는지 데이터로 파악
+          - **감정 인식을 높이고 싶은 분**: 막연한 기분을 구체적으로 기록하고 분석
+          - **업무 패턴을 개선하고 싶은 분**: 언제, 어떤 상황에서 생산성이 떨어지는지 확인
+          - **CLI 도구를 좋아하는 분**: 아름다운 터미널 UI와 직관적인 명령어
+          
+          ### 🔒 프라이버시 우선
+          - 모든 데이터는 `~/.emolog/` 폴더에 로컬 저장
+          - 외부 서버 전송 없음, 100% 오프라인 동작
+          - 당신만이 데이터에 접근 가능
+          
+          ### 🛠️ 기술 스펙
+          - **Python 3.9+** 지원
+          - **Rich** 라이브러리로 아름다운 터미널 UI
+          - **JSONL** 형식으로 효율적 데이터 저장
+          - **KST** 한국 표준시 지원
+          
+          ### 📝 v${{ steps.version.outputs.VERSION }} 주요 변경사항
+          - 🎉 **초기 릴리스**: 모든 핵심 기능 완성
+          - 📊 **4가지 분석 도구**: stats, patterns, triggers, timeline
+          - 🛠️ **완전한 CRUD**: 생성, 수정, 삭제, 초기화 모든 기능
+          - 🕐 **KST 시간대**: 한국 사용자를 위한 정확한 시간 기록
+          - 🔧 **개발자 도구**: pre-push 훅, CI/CD, 자동 배포
+          
+          상세한 변경사항: [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md)
+          
+          ### 🔧 개발자를 위한 정보
+          - **OIDC 기반 배포**: 안전한 토큰 없는 PyPI 배포 시스템 사용
+          - **자동 CI/CD**: GitHub Actions로 품질 검사 및 자동 배포
+          - **코드 품질**: Black, isort를 통한 일관된 코드 스타일
+          - **다중 Python 버전**: 3.9부터 3.12까지 테스트 완료
+          
+          ### 💬 커뮤니티 & 지원
+          - 🐛 **버그 발견**: [Issues 탭](https://github.com/${{ github.repository }}/issues)에서 신고
+          - 💡 **아이디어 제안**: [Discussions](https://github.com/${{ github.repository }}/discussions)에서 의견 공유
+          - 📚 **사용법 가이드**: [README](https://github.com/${{ github.repository }}#readme)에서 자세한 설명
+          - 🤝 **기여하기**: [개발 가이드](https://github.com/${{ github.repository }}#-기여)로 프로젝트 참여
+          
+          ### 🙏 마지막으로...
+          
+          Emolog을 만든 이유는 단순합니다. **개발자의 감정도 코드만큼 중요하다**고 생각하기 때문입니다.
+          
+          디버깅하다 짜증날 때, 배포 성공해서 기쁠 때, 코드리뷰 받고 배울 때...  
+          이 모든 순간들이 여러분의 성장과 행복에 영향을 줍니다.
+          
+          Emolog과 함께 감정을 돌보는 개발자가 되어보세요! 🧠💚
+          
+          ---
+          
+          **🎮 지금 바로 시작**: `pip install emolog && emo`
         draft: false
         prerelease: false

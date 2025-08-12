@@ -119,7 +119,7 @@ emo backup
 ## 🚀 배포 (개발자용)
 
 ### PyPI 배포 자동화
-이 프로젝트는 GitHub Actions를 통한 자동 배포를 지원합니다.
+이 프로젝트는 GitHub Actions와 OIDC를 통한 안전한 자동 배포를 지원합니다.
 
 1. **태그 생성으로 배포**:
    ```bash
@@ -128,11 +128,19 @@ emo backup
    git push origin v1.0.0
    ```
 
-2. **GitHub Secrets 설정** (저장소 관리자):
-   - `PYPI_API_TOKEN`: PyPI API 토큰
-   - `TEST_PYPI_API_TOKEN`: Test PyPI API 토큰
+2. **OIDC 기반 배포 설정** (저장소 관리자):
+   - PyPI에서 Trusted Publisher 설정
+   - Test PyPI에서 Trusted Publisher 설정
+   - 토큰 관리 불필요! 🎉
 
-3. **수동 배포**:
+3. **Trusted Publisher 설정 방법**:
+   - PyPI → Account settings → Publishing → Add a new pending publisher
+   - Owner: `{your-github-username}`
+   - Repository name: `emolog`
+   - Workflow name: `publish.yml`
+   - Environment name: `pypi` (또는 `test-pypi`)
+
+4. **수동 배포**:
    ```bash
    # 빌드
    python -m build

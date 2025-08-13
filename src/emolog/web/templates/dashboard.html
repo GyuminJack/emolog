@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏠 감정의 다락방 - Emolog</title>
+    <link rel="stylesheet" href="/static/css/attic.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="attic-container">
+        <!-- Header -->
+        <header class="attic-header">
+            <h1 class="attic-title">
+                🏠 감정의 다락방
+                <span class="subtitle">당신만의 조용한 공간</span>
+            </h1>
+            <div class="time-indicator" id="currentTime"></div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="attic-main">
+            <!-- Window Section - The Heart of the Attic -->
+            <section class="window-section">
+                <div class="window-frame">
+                    <!-- Attic ceiling with wooden beams -->
+                    <div class="attic-ceiling"></div>
+                    
+                    <!-- Skylight window frame -->
+                    <div class="skylight-frame">
+                        <div class="window-content" id="emotionalWindow">
+                            <div class="window-scene {{ current_mood }}" id="windowScene">
+                                <div class="sky-layer"></div>
+                                <div class="cloud-layer"></div>
+                                <div class="weather-layer"></div>
+                            </div>
+                            <div class="window-reflection"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Window sill -->
+                    <div class="window-sill">
+                        <div class="plant-pot">🌱</div>
+                        <div class="mood-description" id="moodDescription">
+                            {% if current_mood %}
+                                {% if current_mood == 'sunny' %}따스한 햇살이 천창을 통해 스며들고, 새들의 지저귐이 들립니다
+                                {% elif current_mood == 'clear' %}맑고 청명한 하늘이 천창 너머로 보이며, 평온한 바람이 느껴집니다
+                                {% elif current_mood == 'peaceful' %}고요한 오후, 천창 위로 구름이 천천히 흘러갑니다
+                                {% elif current_mood == 'cloudy' %}회색 구름이 천창을 덮었지만, 그 사이로 빛이 스며듭니다
+                                {% elif current_mood == 'foggy' %}부드러운 안개가 천창을 감싸며, 모든 것이 몽환적입니다
+                                {% elif current_mood == 'rainy' %}천창에 빗방울이 떨어지며, 차분한 빗소리가 다락방을 채웁니다
+                                {% elif current_mood == 'storm' %}천창 너머 먹구름과 번개가 보이지만, 곧 지나갈 것입니다
+                                {% else %}천창 너머로 알 수 없는 풍경이 펼쳐져 있습니다
+                                {% endif %}
+                            {% else %}천창 너머로 고요한 오후의 하늘이 보입니다
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Today's Emotions -->
+                <section class="dashboard-card today-card">
+                    <h3>📝 오늘의 감정</h3>
+                    <div class="today-emotions">
+                        {% if today_entries %}
+                            {% for entry in today_entries[-3:] %}
+                            <div class="emotion-bubble">
+                                <span class="emotion-text">{{ entry.emotion }}</span>
+                                <span class="emotion-intensity">{{ entry.intensity }}/10</span>
+                                <div class="emotion-time">{{ entry.display_clock }}</div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="no-entries">
+                                오늘은 아직 기록이 없어요<br>
+                                <small>터미널에서 <code>emo</code>로 시작해보세요</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+
+                <!-- Quick Stats -->
+                <section class="dashboard-card stats-card">
+                    <h3>📊 최근 상태</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">{{ stats.total_entries }}</div>
+                            <div class="stat-label">총 기록</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">{{ stats.avg_intensity }}</div>
+                            <div class="stat-label">평균 강도</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">{{ stats.top_emotions[0][0] if stats.top_emotions else '-' }}</div>
+                            <div class="stat-label">주요 감정</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Entries -->
+                <section class="dashboard-card recent-card">
+                    <h3>📚 최근 기록들</h3>
+                    <div class="recent-entries">
+                        {% for entry in recent_entries[-5:] %}
+                        <div class="entry-item">
+                            <div class="entry-header">
+                                <div class="entry-emotion">{{ entry.emotion }}</div>
+                                <div class="entry-datetime">
+                                    <div class="entry-date">{{ entry.display_date }}</div>
+                                    <div class="entry-time">{{ entry.display_clock }}</div>
+                                </div>
+                            </div>
+                            <div class="entry-situation">{{ entry.situation[:40] }}{% if entry.situation|length > 40 %}...{% endif %}</div>
+                            <div class="entry-meta">
+                                <span class="entry-intensity">{{ entry.intensity }}/10</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <!-- AI Counseling (Placeholder) -->
+                <section class="dashboard-card ai-card">
+                    <h3>🧠 AI 상담사</h3>
+                    <div class="ai-placeholder">
+                        <div class="ai-avatar">🤖</div>
+                        <p>곧 만나요!</p>
+                        <p class="ai-description">
+                            여러분의 감정을 이해하고<br>
+                            따뜻한 조언을 드릴 준비를 하고 있어요.
+                        </p>
+                        <button class="ai-button" disabled>
+                            준비 중...
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="attic-footer">
+            <div class="footer-actions">
+                <button class="action-btn" onclick="refreshData()">🔄 새로고침</button>
+                <button class="action-btn" onclick="openTerminal()">💻 터미널에서 기록하기</button>
+            </div>
+            <div class="footer-note">
+                이곳은 당신만의 안전한 공간입니다 💜
+            </div>
+        </footer>
+    </div>
+
+    <script src="/static/js/attic.js"></script>
+    <script>
+        // Initialize with current data
+        window.currentMood = '{{ current_mood or "peaceful" }}';
+        window.moodDescription = document.getElementById('moodDescription').textContent.trim();
+        
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ko-KR', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+        
+        updateTime();
+        setInterval(updateTime, 1000);
+        
+        // Window animation based on mood
+        function animateWindow() {
+            const scene = document.getElementById('windowScene');
+            if (scene) {
+                scene.classList.add('animate');
+            }
+        }
+        
+        // Start animations when page loads
+        window.addEventListener('load', () => {
+            setTimeout(animateWindow, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,820 @@
+/* Emolog Attic - Emotional Dashboard Styles */
+/* A peaceful, introspective space for emotions */
+
+:root {
+    /* Warm, muted color palette */
+    --attic-bg: #f7f5f3;
+    --attic-wood: #8b7355;
+    --attic-wood-dark: #6b5842;
+    --window-frame: #4a4a4a;
+    --glass-tint: rgba(135, 206, 250, 0.1);
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-shadow: rgba(139, 115, 85, 0.1);
+    --text-primary: #4a4a4a;
+    --text-secondary: #7a7a7a;
+    --text-muted: #9a9a9a;
+    
+    /* Emotional colors */
+    --sunny: linear-gradient(135deg, #ffeb3b, #ffc107);
+    --clear: linear-gradient(135deg, #87ceeb, #4fc3f7);
+    --peaceful: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+    --cloudy: linear-gradient(135deg, #e0e0e0, #bdbdbd);
+    --foggy: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+    --rainy: linear-gradient(135deg, #90a4ae, #607d8b);
+    --storm: linear-gradient(135deg, #424242, #616161);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--attic-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(139, 115, 85, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 115, 85, 0.05) 0%, transparent 50%);
+}
+
+.attic-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.attic-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px var(--card-shadow);
+    backdrop-filter: blur(10px);
+}
+
+.attic-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--attic-wood-dark);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    display: block;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.time-indicator {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+/* Main Content */
+.attic-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Window Section - Realistic attic view */
+.window-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    perspective: 1200px;
+    perspective-origin: center 80%;
+    height: 500px;
+    overflow: hidden;
+}
+
+.window-frame {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+/* Main attic structure */
+.attic-ceiling {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(135deg, #8b7355 0%, #6b5842 50%, #5a4a35 100%);
+    transform: rotateX(60deg) translateZ(-100px);
+    transform-origin: bottom;
+    box-shadow: 
+        inset 0 -10px 30px rgba(0, 0, 0, 0.4),
+        0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Wooden beams structure */
+.attic-ceiling::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    right: 5%;
+    height: 12px;
+    background: #5a4a35;
+    border-radius: 6px;
+    box-shadow: 
+        0 60px 0 #5a4a35,
+        0 120px 0 #5a4a35,
+        inset 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.attic-ceiling::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(to bottom, #6b5842, #5a4a35);
+    border-radius: 4px;
+    box-shadow: 
+        200px 0 0 #5a4a35,
+        400px 0 0 #5a4a35,
+        inset 2px 0 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Large angled skylight windows */
+.skylight-frame {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%) rotateX(35deg) rotateY(-5deg);
+    width: 500px;
+    height: 350px;
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 0 30px rgba(0, 0, 0, 0.3);
+    transform-style: preserve-3d;
+}
+
+/* Simple clean glass window */
+.window-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: rgba(135, 206, 250, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    backdrop-filter: blur(1px);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+/* Simple cross frame - classic window style */
+.window-content::before {
+    content: '';
+    position: absolute;
+    top: 48%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #2a2a2a;
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.window-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 48%;
+    width: 4px;
+    background: #2a2a2a;
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.window-scene {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: all 0.8s ease-in-out;
+}
+
+.window-scene.animate {
+    transform: scale(1.02);
+}
+
+/* Sky layers for different moods */
+.sky-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: all 1.2s ease-in-out;
+}
+
+.window-scene.sunny .sky-layer {
+    background: var(--sunny);
+}
+
+.window-scene.clear .sky-layer {
+    background: var(--clear);
+}
+
+.window-scene.peaceful .sky-layer {
+    background: var(--peaceful);
+}
+
+.window-scene.cloudy .sky-layer {
+    background: var(--cloudy);
+}
+
+.window-scene.foggy .sky-layer {
+    background: var(--foggy);
+}
+
+.window-scene.rainy .sky-layer {
+    background: var(--rainy);
+}
+
+.window-scene.storm .sky-layer {
+    background: var(--storm);
+}
+
+/* Realistic cloud layers */
+.cloud-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.8;
+}
+
+.cloud-layer::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: -20%;
+    width: 140%;
+    height: 40%;
+    background-image: 
+        radial-gradient(ellipse 80px 40px at 25% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 70%),
+        radial-gradient(ellipse 120px 60px at 70% 30%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+    animation: cloudDrift 30s linear infinite;
+}
+
+.cloud-layer::after {
+    content: '';
+    position: absolute;
+    top: 60%;
+    left: -30%;
+    width: 160%;
+    height: 30%;
+    background-image: 
+        radial-gradient(ellipse 100px 30px at 40% 50%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 70%),
+        radial-gradient(ellipse 80px 25px at 80% 60%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+    animation: cloudDrift 45s linear infinite reverse;
+}
+
+@keyframes cloudDrift {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(30px); }
+}
+
+.weather-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Realistic rain effect */
+.window-scene.rainy .weather-layer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    right: 0;
+    height: 150%;
+    background-image: 
+        linear-gradient(200deg, transparent 40%, rgba(173, 216, 230, 0.6) 41%, rgba(173, 216, 230, 0.6) 42%, transparent 43%),
+        linear-gradient(205deg, transparent 45%, rgba(173, 216, 230, 0.4) 46%, rgba(173, 216, 230, 0.4) 47%, transparent 48%),
+        linear-gradient(210deg, transparent 50%, rgba(173, 216, 230, 0.5) 51%, rgba(173, 216, 230, 0.5) 52%, transparent 53%);
+    background-size: 3px 15px, 4px 20px, 2px 12px;
+    animation: rainFall 0.6s linear infinite;
+}
+
+.window-scene.rainy .weather-layer::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30%;
+    background: linear-gradient(to top, rgba(173, 216, 230, 0.2) 0%, transparent 100%);
+    filter: blur(1px);
+}
+
+@keyframes rainFall {
+    0% { transform: translateY(-20px); }
+    100% { transform: translateY(20px); }
+}
+
+/* Natural light reflection like in reference image */
+.window-reflection {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        /* Main light beam from top-left */
+        radial-gradient(ellipse 200px 300px at 20% 10%, 
+            rgba(255, 255, 255, 0.4) 0%, 
+            rgba(255, 255, 255, 0.15) 30%, 
+            transparent 60%),
+        /* Secondary light beam from top-right */
+        radial-gradient(ellipse 150px 250px at 80% 15%, 
+            rgba(255, 255, 255, 0.25) 0%, 
+            rgba(255, 255, 255, 0.08) 40%, 
+            transparent 70%),
+        /* Subtle glass reflection */
+        linear-gradient(135deg, 
+            transparent 30%, 
+            rgba(255, 255, 255, 0.12) 45%, 
+            rgba(255, 255, 255, 0.06) 55%, 
+            transparent 70%);
+    pointer-events: none;
+    z-index: 20;
+    animation: naturalLightShift 12s ease-in-out infinite;
+}
+
+@keyframes naturalLightShift {
+    0%, 100% { 
+        opacity: 0.8; 
+        transform: translateX(0px) translateY(0px);
+    }
+    33% { 
+        opacity: 1; 
+        transform: translateX(5px) translateY(-3px);
+    }
+    66% { 
+        opacity: 0.9; 
+        transform: translateX(-3px) translateY(2px);
+    }
+}
+
+/* Light scattering effect on glass surface */
+.window-scene::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.3) 1px, transparent 3px),
+        radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.2) 1px, transparent 2px),
+        radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.25) 1px, transparent 2px),
+        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.2) 1px, transparent 3px);
+    background-size: 40px 40px, 60px 60px, 35px 35px, 50px 50px;
+    opacity: 0.6;
+    z-index: 5;
+    animation: lightSparkle 8s ease-in-out infinite;
+}
+
+@keyframes lightSparkle {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+/* Glass condensation for rainy weather */
+.window-scene.rainy .window-reflection::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 1px, transparent 2px),
+        radial-gradient(circle at 60% 20%, rgba(255, 255, 255, 0.2) 1px, transparent 2px),
+        radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.25) 1.5px, transparent 2.5px),
+        radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.2) 1px, transparent 2px);
+    background-size: 30px 30px, 40px 40px, 25px 25px, 35px 35px;
+    opacity: 0.7;
+}
+
+/* Floor area beneath the window */
+.window-sill {
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%) rotateX(45deg);
+    width: 90%;
+    height: 60px;
+    background: linear-gradient(135deg, #8b7355 0%, #6b5842 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        inset 0 5px 10px rgba(255, 255, 255, 0.1),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.2);
+    z-index: 5;
+    transform-origin: top;
+}
+
+/* Add subtle wood grain texture */
+.window-sill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.05) 2px,
+            rgba(0, 0, 0, 0.05) 4px
+        );
+    border-radius: inherit;
+}
+
+.plant-pot {
+    font-size: 1.5rem;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.mood-description {
+    flex: 1;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.dashboard-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px var(--card-shadow);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--card-shadow);
+}
+
+.dashboard-card h3 {
+    margin-bottom: 1rem;
+    color: var(--attic-wood-dark);
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* Today's Emotions */
+.today-emotions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.emotion-bubble {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem;
+    background: rgba(139, 115, 85, 0.08);
+    border-radius: 12px;
+    border-left: 4px solid var(--attic-wood);
+}
+
+.emotion-text {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.emotion-intensity {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    background: rgba(139, 115, 85, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+}
+
+.emotion-time {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.no-entries {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem 1rem;
+    font-style: italic;
+}
+
+.no-entries code {
+    background: rgba(139, 115, 85, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Consolas', monospace;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(139, 115, 85, 0.05);
+    border-radius: 10px;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--attic-wood-dark);
+    margin-bottom: 0.3rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Recent Entries */
+.recent-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.entry-item {
+    padding: 1rem;
+    background: rgba(139, 115, 85, 0.05);
+    border-radius: 10px;
+    border-left: 3px solid var(--attic-wood);
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.entry-emotion {
+    font-weight: 500;
+    color: var(--attic-wood-dark);
+    font-size: 1rem;
+}
+
+.entry-datetime {
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.2;
+}
+
+.entry-date {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.entry-time {
+    margin-top: 2px;
+    font-size: 0.7rem;
+}
+
+.entry-situation {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.entry-meta {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.entry-intensity {
+    background: rgba(139, 115, 85, 0.15);
+    color: var(--attic-wood-dark);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* AI Counseling Card */
+.ai-placeholder {
+    text-align: center;
+    padding: 1rem;
+}
+
+.ai-avatar {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.ai-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.ai-button {
+    background: rgba(139, 115, 85, 0.1);
+    color: var(--text-muted);
+    border: 2px solid rgba(139, 115, 85, 0.2);
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: not-allowed;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+/* Footer */
+.attic-footer {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px var(--card-shadow);
+    text-align: center;
+}
+
+.footer-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.action-btn {
+    background: var(--attic-wood);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.action-btn:hover {
+    background: var(--attic-wood-dark);
+    transform: translateY(-1px);
+}
+
+.footer-note {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .attic-container {
+        padding: 10px;
+    }
+    
+    .attic-title {
+        font-size: 2rem;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .window-section {
+        height: 350px;
+        perspective: 800px;
+        perspective-origin: center 85%;
+    }
+    
+    .window-frame {
+        max-width: 100%;
+        height: 100%;
+    }
+    
+    .skylight-frame {
+        width: 300px;
+        height: 220px;
+        top: 30px;
+        transform: translateX(-50%) rotateX(30deg) rotateY(-3deg);
+    }
+    
+    .attic-ceiling {
+        height: 140px;
+        transform: rotateX(55deg) translateZ(-80px);
+    }
+    
+    .attic-ceiling::before {
+        height: 8px;
+        box-shadow: 
+            0 40px 0 #5a4a35,
+            0 80px 0 #5a4a35,
+            inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    
+    .attic-ceiling::after {
+        width: 6px;
+        box-shadow: 
+            100px 0 0 #5a4a35,
+            200px 0 0 #5a4a35,
+            inset 1px 0 3px rgba(0, 0, 0, 0.3);
+    }
+    
+    .window-sill {
+        bottom: -50px;
+        width: 85%;
+        height: 40px;
+        transform: translateX(-50%) rotateX(40deg);
+    }
+    
+    .mood-description {
+        font-size: 0.75rem;
+        line-height: 1.3;
+        text-align: center;
+    }
+    
+    .footer-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Smooth loading animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dashboard-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.dashboard-card:nth-child(1) { animation-delay: 0.1s; }
+.dashboard-card:nth-child(2) { animation-delay: 0.2s; }
+.dashboard-card:nth-child(3) { animation-delay: 0.3s; }
+.dashboard-card:nth-child(4) { animation-delay: 0.4s; }

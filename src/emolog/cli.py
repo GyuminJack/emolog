@@ -137,6 +137,19 @@ def edit(period):
     data_manager.edit_entry(period)
 
 
+@main.command()
+@click.option("--port", default=8080, help="Port for the web server")
+@click.option(
+    "--open-browser", "--open", is_flag=True, help="Automatically open browser"
+)
+@click.option("--debug", is_flag=True, help="Enable debug mode")
+def web(port, open_browser, debug):
+    """Start the web dashboard - your emotional attic"""
+    from .web.server import start_server
+
+    start_server(port=port, open_browser=open_browser, debug=debug)
+
+
 def start_emotion_logging():
     """Start the interactive emotion logging process"""
     console.print(

@@ -5,6 +5,7 @@ Data management for emotion logs
 import csv
 import json
 import os
+import sys
 import tarfile
 import uuid
 import zoneinfo
@@ -22,6 +23,37 @@ console = Console()
 
 # Korean timezone
 KST = zoneinfo.ZoneInfo("Asia/Seoul")
+
+
+def korean_input(prompt_text: str, default: str = "") -> str:
+    """
+    한글 입력을 위한 커스텀 함수
+    Rich의 Prompt 대신 Python의 기본 input() 사용
+    """
+    # UTF-8 인코딩 설정
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if hasattr(sys.stdin, "reconfigure"):
+        sys.stdin.reconfigure(encoding="utf-8")
+
+    # 프롬프트 텍스트를 Rich 스타일로 출력
+    console.print(f"[bold cyan]{prompt_text}[/bold cyan]", end="")
+    if default:
+        console.print(f" [dim](기본값: {default})[/dim]", end="")
+    console.print(": ", end="")
+
+    try:
+        # 기본 input() 사용 - 터미널의 네이티브 한글 처리 활용
+        result = input().strip()
+        return result if result else default
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[yellow]입력이 취소되었습니다.[/yellow]")
+        return default
+    except UnicodeDecodeError:
+        console.print(
+            "\n[red]입력 인코딩 오류가 발생했습니다. 다시 시도해주세요.[/red]"
+        )
+        return korean_input(prompt_text, default)
 
 
 class DataManager:
@@ -697,14 +729,14 @@ class DataManager:
         """Edit situation field"""
         console.print(f"\n[bold cyan]상황 수정[/bold cyan]")
         console.print(f"현재: {current}")
-        new_value = Prompt.ask("새로운 상황", default=current).strip()
+        new_value = korean_input("새로운 상황", current).strip()
         return new_value if new_value else current
 
     def _edit_emotion(self, current: str) -> str:
         """Edit emotion field"""
         console.print(f"\n[bold cyan]감정 수정[/bold cyan]")
         console.print(f"현재: {current}")
-        new_value = Prompt.ask("새로운 감정", default=current).strip()
+        new_value = korean_input("새로운 감정", current).strip()
         return new_value if new_value else current
 
     def _edit_intensity(self, current: int) -> int:
@@ -721,14 +753,14 @@ class DataManager:
         """Edit body reaction field"""
         console.print(f"\n[bold cyan]몸 반응 수정[/bold cyan]")
         console.print(f"현재: {current if current else '없음'}")
-        new_value = Prompt.ask("새로운 몸 반응", default=current).strip()
+        new_value = korean_input("새로운 몸 반응", current).strip()
         return new_value
 
     def _edit_thought(self, current: str) -> str:
         """Edit thought field"""
         console.print(f"\n[bold cyan]생각 수정[/bold cyan]")
         console.print(f"현재: {current if current else '없음'}")
-        new_value = Prompt.ask("새로운 생각", default=current).strip()
+        new_value = korean_input("새로운 생각", current).strip()
         return new_value
 
     def _edit_context(self, current: str) -> str:
@@ -747,7 +779,7 @@ class DataManager:
             for i, ctx in enumerate(contexts, 1):
                 console.print(f"{i}. {ctx['emoji']} {ctx['label']} ({ctx['key']})")
 
-        new_value = Prompt.ask("새로운 컨텍스트", default=current).strip()
+        new_value = korean_input("새로운 컨텍스트", current).strip()
         return new_value if new_value else current
 
     def _edit_tags(self, current: List[str]) -> List[str]:
@@ -756,9 +788,7 @@ class DataManager:
         current_tags_str = ", ".join(current) if current else ""
         console.print(f"현재: {current_tags_str if current_tags_str else '없음'}")
 
-        new_value = Prompt.ask(
-            "새로운 태그 (쉼표로 구분)", default=current_tags_str
-        ).strip()
+        new_value = korean_input("새로운 태그 (쉼표로 구분)", current_tags_str).strip()
         if new_value:
             tags = [tag.strip() for tag in new_value.split(",") if tag.strip()]
             return tags[:5]  # Limit to 5 tags

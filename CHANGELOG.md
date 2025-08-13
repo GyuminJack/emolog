@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- 🌐 **Web Dashboard**: Beautiful "Emotional Attic" interface
+  - `emo web`: Start local web server for emotion visualization
+  - 3D attic with skylight window showing current mood
+  - Real-time weather effects based on emotions (sun, rain, clouds, fog, storms)
+  - Today's emotions and recent entries display
+  - Responsive design for mobile and desktop
+- 🎨 **Emotion-based Visuals**
+  - Dynamic skylight scenes that change with your mood
+  - Natural light scattering and glass reflection effects
+  - Smooth animations including cloud drift and rain
+  - Realistic 3D perspective and spatial depth
+- 📱 **Improved Time Display**
+  - Korean-style date/time formatting (MM/DD 오전/오후)
+  - Cleaner timestamp presentation in web interface
+  - Proper timezone handling for web dashboard
+- 🇰🇷 **Better Korean Input Support**
+  - Custom input function to fix Korean character composition issues
+  - Smooth backspace handling for Korean text
+  - UTF-8 encoding optimization for terminal input
+  - Applied to all text input fields (situation, emotion, thoughts, tags, etc.)
+
+### Technical Details
+- **New Dependencies**: fastapi, uvicorn[standard], jinja2
+- **Web Framework**: FastAPI with Jinja2 templates
+- **Frontend**: Pure CSS with advanced animations and 3D transforms
+- **Real-time Updates**: WebSocket-like periodic refresh for live data
+
 ## [0.1.0] - 2024-08-12
 
 ### Added

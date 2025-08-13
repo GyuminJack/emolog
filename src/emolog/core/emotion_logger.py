@@ -3,6 +3,8 @@ Interactive emotion logging system
 """
 
 import json
+import locale
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -15,6 +17,37 @@ from rich.text import Text
 from .data_manager import DataManager
 
 console = Console()
+
+
+def korean_input(prompt_text: str, default: str = "") -> str:
+    """
+    한글 입력을 위한 커스텀 함수
+    Rich의 Prompt 대신 Python의 기본 input() 사용
+    """
+    # UTF-8 인코딩 설정
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if hasattr(sys.stdin, "reconfigure"):
+        sys.stdin.reconfigure(encoding="utf-8")
+
+    # 프롬프트 텍스트를 Rich 스타일로 출력
+    console.print(f"[bold cyan]{prompt_text}[/bold cyan]", end="")
+    if default:
+        console.print(f" [dim](기본값: {default})[/dim]", end="")
+    console.print(": ", end="")
+
+    try:
+        # 기본 input() 사용 - 터미널의 네이티브 한글 처리 활용
+        result = input().strip()
+        return result if result else default
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[yellow]입력이 취소되었습니다.[/yellow]")
+        return default
+    except UnicodeDecodeError:
+        console.print(
+            "\n[red]입력 인코딩 오류가 발생했습니다. 다시 시도해주세요.[/red]"
+        )
+        return korean_input(prompt_text, default)
 
 
 class EmotionLogger:
@@ -118,7 +151,7 @@ class EmotionLogger:
             "[dim]예: '회의에서 디자인 변경 요구 받음', '코드리뷰 받음'[/dim]"
         )
 
-        situation = Prompt.ask("상황", default="").strip()
+        situation = korean_input("상황").strip()
         return situation
 
     def _get_emotion(self) -> str:
@@ -156,7 +189,7 @@ class EmotionLogger:
         console.print(table)
         console.print("[dim]위 목록에서 선택하거나 직접 입력하세요[/dim]")
 
-        emotion = Prompt.ask("감정", default="").strip()
+        emotion = korean_input("감정").strip()
         return emotion
 
     def _get_intensity(self) -> int:
@@ -183,7 +216,7 @@ class EmotionLogger:
             "[dim]위 목록에서 선택하거나 직접 입력하세요 (Enter로 건너뛰기)[/dim]"
         )
 
-        body_reaction = Prompt.ask("몸 반응", default="").strip()
+        body_reaction = korean_input("몸 반응").strip()
 
         # Check if user entered a number
         if body_reaction.isdigit():
@@ -200,7 +233,7 @@ class EmotionLogger:
             "[dim]예: '망했다', '어떻게 해결하지', '잘될거야' (Enter로 건너뛰기)[/dim]"
         )
 
-        thought = Prompt.ask("생각", default="").strip()
+        thought = korean_input("생각").strip()
         return thought
 
     def _get_context(self) -> str:
@@ -213,7 +246,7 @@ class EmotionLogger:
             )
 
         while True:
-            choice = Prompt.ask("번호를 선택하거나 직접 입력", default="").strip()
+            choice = korean_input("번호를 선택하거나 직접 입력").strip()
 
             if choice.isdigit():
                 index = int(choice) - 1
@@ -234,7 +267,7 @@ class EmotionLogger:
         )
         console.print("[dim]예: '회의,디자인,일정'[/dim]")
 
-        tags_input = Prompt.ask("태그", default="").strip()
+        tags_input = korean_input("태그").strip()
         if tags_input:
             tags = [tag.strip() for tag in tags_input.split(",") if tag.strip()]
             return tags[:5]  # Limit to 5 tags
